@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .login-wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: url('/img/bookshelf.svg');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+        }
+        .login-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(15,20,30,0.88) 0%, rgba(15,20,30,0.78) 45%, rgba(15,20,30,0.92) 100%);
+        }
+        .login-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 44px 38px;
+            width: 340px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+        }
+        .login-card h1 {
+            text-align: center;
+            font-size: 1.3rem;
+            margin: 0 0 4px 0;
+        }
+        .login-card .tagline {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 26px;
+        }
+        .login-card .btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+        }
+        .alert {
+            font-family: Arial, sans-serif;
+            font-size: 0.82rem;
+            padding: 10px 12px;
+            border-radius: 5px;
+            margin-bottom: 16px;
+        }
+        .alert-error {
+            background: #f4e2df;
+            color: var(--danger);
+            border: 1px solid #e2bdb6;
+        }
+        .alert-success {
+            background: #e2efe6;
+            color: var(--success);
+            border: 1px solid #bfdec8;
+        }
+    </style>
+</head>
+<body>
+<div class="login-wrap">
+    <div class="login-card">
+        <h1>📚 Library</h1>
+        <div class="tagline">Management System</div>
+
+        <div class="alert alert-error" th:if="${param.error}">
+            Invalid username or password.
+        </div>
+        <div class="alert alert-success" th:if="${param.logout}">
+            You have been logged out.
+        </div>
+
+        <form method="post" th:action="@{/login}">
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required autofocus>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button class="btn" type="submit">Sign in</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

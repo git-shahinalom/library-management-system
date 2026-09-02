@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Issue / Return - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments :: sidebar('borrow')}"></div>
+
+    <div class="main">
+        <h2>Issue / Return</h2>
+        <p class="subhead">Hand out a book or process a return</p>
+
+        <div class="message-banner" th:if="${message}" th:text="${message}"></div>
+
+        <div class="card" sec:authorize="hasRole('LIBRARIAN')">
+            <h3 style="margin-top:0; font-size:1.05rem;">Issue a book</h3>
+            <form method="post" action="/borrow/issue" class="form-grid">
+                <div class="field">
+                    <label for="bookId">Book</label>
+                    <select id="bookId" name="bookId" required>
+                        <option value="" disabled selected>Choose a book</option>
+                        <option th:each="book : ${books}" th:if="${book.available}"
+                                th:value="${book.id}"
+                                th:text="${book.title} + ' (' + ${book.availableCopies} + ' left)'">
+                        </option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="memberId">Member</label>
+                    <select id="memberId" name="memberId" required>
+                        <option value="" disabled selected>Choose a member</option>
+                        <option th:each="member : ${members}"
+                                th:value="${member.id}"
+                                th:text="${member.name} + ' (' + ${member.memberType} + ')'">
+                        </option>
+                    </select>
+                </div>
+                <div style="align-self:end;">
+                    <button class="btn" type="submit">Issue book</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top:0; font-size:1.05rem;">Currently borrowed</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Borrowed</th>
+                    <th>Due</th>
+                    <th sec:authorize="hasRole('LIBRARIAN')"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="record : ${activeBorrows}">
+                    <td th:text="${record.book.title}">Book</td>
+                    <td th:text="${record.member.name}">Member</td>
+                    <td th:text="${record.borrowDate}">2026-01-01</td>
+                    <td th:text="${record.dueDate}">2026-01-15</td>
+                    <td sec:authorize="hasRole('LIBRARIAN')">
+                        <form class="inline" th:action="@{'/borrow/return/' + ${record.id}}" method="post">
+                            <button class="btn btn-secondary" type="submit">Mark returned</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="empty-state" th:if="${#lists.isEmpty(activeBorrows)}">No books are currently out.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

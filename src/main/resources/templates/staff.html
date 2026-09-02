@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments :: sidebar('staff')}"></div>
+
+    <div class="main">
+        <h2>Staff</h2>
+        <p class="subhead">Librarian accounts with full system access</p>
+
+        <div class="card">
+            <div style="display:flex; margin-bottom:16px;">
+                <a class="btn" href="/staff/new" style="margin-left:auto;">+ Add librarian</a>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Staff ID</th>
+                    <th>Department</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="lib : ${librarians}">
+                    <td th:text="${lib.name}">Name</td>
+                    <td th:text="${lib.staffId}">Staff ID</td>
+                    <td th:text="${lib.department}">Department</td>
+                    <td th:text="${lib.username}">username</td>
+                    <td th:text="${lib.email}">email</td>
+                    <td>
+                        <form class="inline" th:action="@{'/staff/' + ${lib.id} + '/delete'}" method="post"
+                              onsubmit="return confirm('Remove this staff account?');">
+                            <button class="btn btn-danger" type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="empty-state" th:if="${#lists.isEmpty(librarians)}">No staff accounts yet. Add the first one above.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

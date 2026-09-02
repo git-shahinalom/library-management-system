@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Members - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments :: sidebar('members')}"></div>
+
+    <div class="main">
+        <h2>Members</h2>
+        <p class="subhead">Students and teachers registered with the library</p>
+
+        <div class="card">
+            <div style="display:flex; margin-bottom:16px;">
+                <a class="btn" href="/members/new" style="margin-left:auto;">+ Add member</a>
+            </div>
+
+            <!--
+                Note the polymorphism here: `members` is a List<Member>, mixing
+                Student and Teacher objects. member.memberType, member.maxBorrowLimit
+                and member.borrowDurationDays each call the overridden method on
+                whichever concrete subclass the object actually is - Thymeleaf
+                doesn't need to know or care which one.
+            -->
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Email</th>
+                    <th>Borrow limit</th>
+                    <th>Loan period</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="member : ${members}">
+                    <td th:text="${member.name}">Name</td>
+                    <td>
+                        <span class="badge badge-student" th:if="${member.memberType == 'Student'}" th:text="${member.memberType}">Student</span>
+                        <span class="badge badge-teacher" th:if="${member.memberType == 'Teacher'}" th:text="${member.memberType}">Teacher</span>
+                    </td>
+                    <td th:text="${member.email}">email</td>
+                    <td th:text="${member.maxBorrowLimit} + ' books'">3 books</td>
+                    <td th:text="${member.borrowDurationDays} + ' days'">14 days</td>
+                    <td>
+                        <form class="inline" th:action="@{'/members/' + ${member.id} + '/delete'}" method="post"
+                              onsubmit="return confirm('Remove this member?');">
+                            <button class="btn btn-danger" type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="empty-state" th:if="${#lists.isEmpty(members)}">No members yet. Add the first one above.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

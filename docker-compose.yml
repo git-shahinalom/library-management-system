@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    container_name: library-app
+    restart: unless-stopped
+    ports:
+      - "8081:8080"     # host:container - chosen to avoid clashing with
+                         # firojatech-system's ports (3000, 8080, 3306)
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: 192.168.88.252   # VM 103 (Database Server) IP
+      DB_PORT: 3306
+      DB_NAME: library_db
+      DB_USER: library_user
+      DB_PASSWORD: ${DB_PASSWORD}   # loaded from .env, never committed to git

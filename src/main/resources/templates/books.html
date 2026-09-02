@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Books - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments :: sidebar('books')}"></div>
+
+    <div class="main">
+        <h2>Books</h2>
+        <p class="subhead">Everything currently in the catalogue</p>
+
+        <div class="card">
+            <form method="get" action="/books" style="display:flex; gap:10px; margin-bottom: 16px;">
+                <input type="text" name="query" placeholder="Search by title or author" th:value="${query}" style="max-width:300px;">
+                <button class="btn btn-secondary" type="submit">Search</button>
+                <a class="btn" href="/books/new" style="margin-left:auto;" sec:authorize="hasRole('LIBRARIAN')">+ Add book</a>
+            </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Copies</th>
+                    <th>Status</th>
+                    <th sec:authorize="hasRole('LIBRARIAN')"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.title}">Title</td>
+                    <td th:text="${book.author}">Author</td>
+                    <td th:text="${book.isbn}">ISBN</td>
+                    <td th:text="${book.availableCopies} + ' / ' + ${book.totalCopies}">0 / 0</td>
+                    <td>
+                        <span class="badge badge-available" th:if="${book.available}">Available</span>
+                        <span class="badge badge-out" th:unless="${book.available}">All borrowed</span>
+                    </td>
+                    <td sec:authorize="hasRole('LIBRARIAN')">
+                        <form class="inline" th:action="@{'/books/' + ${book.id} + '/delete'}" method="post"
+                              onsubmit="return confirm('Delete this book?');">
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="empty-state" th:if="${#lists.isEmpty(books)}">No books found yet. Add the first one above.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Staff - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments :: sidebar('staff')}"></div>
+
+    <div class="main">
+        <h2>Add a librarian</h2>
+        <p class="subhead">Register a new staff account with full system access</p>
+
+        <div class="card">
+            <form method="post" action="/staff" class="form-grid">
+                <div class="field">
+                    <label for="l_name">Full name</label>
+                    <input type="text" id="l_name" name="name" required>
+                </div>
+                <div class="field">
+                    <label for="l_email">Email</label>
+                    <input type="email" id="l_email" name="email" required>
+                </div>
+                <div class="field">
+                    <label for="l_phone">Phone</label>
+                    <input type="text" id="l_phone" name="phone">
+                </div>
+                <div class="field">
+                    <label for="l_id">Staff ID</label>
+                    <input type="text" id="l_id" name="staffId" required>
+                </div>
+                <div class="field">
+                    <label for="l_dept">Department</label>
+                    <input type="text" id="l_dept" name="department">
+                </div>
+                <div class="field">
+                    <label for="l_username">Login username</label>
+                    <input type="text" id="l_username" name="username" required>
+                </div>
+                <div class="field">
+                    <label for="l_password">Login password</label>
+                    <input type="password" id="l_password" name="password" required>
+                </div>
+                <div style="align-self:end;">
+                    <button class="btn" type="submit">Add librarian</button>
+                </div>
+            </form>
+        </div>
+
+        <a class="btn btn-secondary" href="/staff">Back to staff list</a>
+    </div>
+</div>
+</body>
+</html>

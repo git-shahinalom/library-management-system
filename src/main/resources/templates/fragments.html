@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="sidebar(active)" class="sidebar" style="display:flex; flex-direction:column; min-height:100vh;">
+    <div>
+        <h1>📚 Library</h1>
+        <div class="tagline">Management System</div>
+        <nav>
+            <a href="/" th:classappend="${active == 'dashboard'} ? 'active'">Dashboard</a>
+            <a href="/books" th:classappend="${active == 'books'} ? 'active'">Books</a>
+            <a href="/members" th:classappend="${active == 'members'} ? 'active'" sec:authorize="hasRole('LIBRARIAN')">Members</a>
+            <a href="/staff" th:classappend="${active == 'staff'} ? 'active'" sec:authorize="hasRole('LIBRARIAN')">Staff</a>
+            <a href="/borrow" th:classappend="${active == 'borrow'} ? 'active'">Issue / Return</a>
+        </nav>
+    </div>
+
+    <div style="margin-top:auto; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
+        <div style="font-family:Arial, sans-serif; font-size:0.78rem; color:#9aa5bd; margin-bottom:2px;"
+             sec:authentication="name">username</div>
+        <div style="font-family:Arial, sans-serif; font-size:0.68rem; color:#6f7a94; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.04em;"
+             sec:authentication="authorities">role</div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" style="width:100%; font-family:Arial,sans-serif; font-size:0.8rem; padding:8px; background:transparent; color:#cfd6e6; border:1px solid rgba(255,255,255,0.25); border-radius:5px; cursor:pointer;">Log out</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

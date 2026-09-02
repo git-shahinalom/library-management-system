@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments :: sidebar('dashboard')}"></div>
+
+    <div class="main">
+        <h2>Dashboard</h2>
+        <p class="subhead">Overview of the library right now</p>
+
+        <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="stat-card">
+                <div class="num" th:text="${totalBooks}">0</div>
+                <div class="label">Book titles</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" th:text="${totalMembers}">0</div>
+                <div class="label">Registered members</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" th:text="${totalStaff}">0</div>
+                <div class="label">Library staff</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" th:text="${activeBorrows}">0</div>
+                <div class="label">Books currently out</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <p style="font-family: Arial, sans-serif; color: var(--muted); margin:0;">
+                Use the menu on the left to manage books, add members, or issue and return books.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
